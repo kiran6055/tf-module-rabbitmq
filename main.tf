@@ -1,10 +1,10 @@
 # creating securoty group for Rabbitmq
-resource "aws_security_group" "rds" {
-  name        = "${var.env}-Rabbitmq-security-group"
-  description = "${var.env}-Rabbitmq-security-group"
+resource "aws_security_group" "rabbitmq" {
+  name        = "${var.env}-rabbitmq-security-group"
+  description = "${var.env}-rabbitmq-security-group"
   vpc_id      = var.vpc_id
   ingress {
-    description = "Rabbitmq"
+    description = "rabbitmq"
     from_port   = 5672
     to_port     = 5672
     protocol    = "tcp"
@@ -18,15 +18,15 @@ resource "aws_security_group" "rds" {
   }
   tags = merge(
     local.common_tags,
-    { Name = "${var.env}-Rabbitmq-security-group" }
+    { Name = "${var.env}-rabbitmq-security-group" }
   )
 }
 
 
 #rabbitmq configuration
-resource "aws_mq_configuration" "Rabbitmq" {
-  description    = "${var.env}-Rabbitmq-configuration"
-  name           = "${var.env}-Rabbitmq-configuration"
+resource "aws_mq_configuration" "rabbitmq" {
+  description    = "${var.env}-rabbitmq-configuration"
+  name           = "${var.env}-rabbitmq-configuration"
   engine_type    = var.engine_type
   engine_version = var.engine_version
 
@@ -35,22 +35,29 @@ resource "aws_mq_configuration" "Rabbitmq" {
 
 #creating rabbitmq
 
-resource "aws_mq_broker" "Rabbitmq" {
-  broker_name = "${var.env}-Rabbitmq"
+resource "aws_mq_broker" "rabbitmq" {
+  broker_name        = "${var.env}-rabbitmq"
+  deployment_mode    = var.deployment_mode
+  engine_type        = var.engine_type
+  engine_version     = var.engine_version
+  host_instance_type = var.host_instance_type
+  security_groups    = [aws_security_group.rabbitmq.id]
+  subnet_ids         = var.deployment_mode == "SINGLE_INSTANCE" ? [var.subnet_ids[0]] : var.subnet_ids
 
   configuration {
     id       = aws_mq_con figuration.rabbitmq.id
     revision = aws_mq_configuration.rabbitmq.latest_revision
   }
 
-  engine_type        = var.engine_type
-  engine_version     = var.engine_version
-  host_instance_type = var.host_instance_type
-  security_groups    = [aws_security_group.test.id]
+  encryption_options {
+    use_aws_owned_key = false
+    kms_key_id =data.aws_kms_key.key.arn
+
+  }
 
   user {
-    username = data.aws_ssm_parameter.USER
-    password = data.aws_ssm_parameter.PASS
+    username = data.aws_ssm_parameter.USER.value
+    password = data.aws_ssm_parameter.PASS.value
   }
 }
 
