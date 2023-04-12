@@ -43,14 +43,14 @@ resource "aws_mq_broker" "Rabbitmq" {
     revision = aws_mq_configuration.rabbitmq.latest_revision
   }
 
-  engine_type        = "ActiveMQ"
-  engine_version     = "5.15.9"
+  engine_type        = var.engine_type
+  engine_version     = var.engine_version
   host_instance_type = var.host_instance_type
   security_groups    = [aws_security_group.test.id]
 
   user {
-    username = "ExampleUser"
-    password = "MindTheGap"
+    username = data.aws_ssm_parameter.USER
+    password = data.aws_ssm_parameter.PASS
   }
 }
 
