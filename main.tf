@@ -52,7 +52,6 @@ resource "aws_mq_broker" "rabbitmq" {
   encryption_options {
     use_aws_owned_key = false
     kms_key_id =data.aws_kms_key.key.arn
-
   }
 
   user {
