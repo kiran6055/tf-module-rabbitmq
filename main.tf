@@ -45,7 +45,7 @@ resource "aws_mq_broker" "rabbitmq" {
   subnet_ids         = var.deployment_mode == "SINGLE_INSTANCE" ? [var.subnet_ids[0]] : var.subnet_ids
 
   configuration {
-    id       = aws_mq_con figuration.rabbitmq.id
+    id       = aws_mq_configuration.rabbitmq.id
     revision = aws_mq_configuration.rabbitmq.latest_revision
   }
 
