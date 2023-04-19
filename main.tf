@@ -1,6 +1,6 @@
 # creating Iam role for ansible mechanism to have ansible pull mechanism
 resource "aws_iam_role" "role" {
-  name = "${var.env}-${var.component}-role"
+  name = "${var.env}-${var.component}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -18,21 +18,21 @@ resource "aws_iam_role" "role" {
 
   tags = merge(
     local.common_tags,
-    { Name = "${var.env}-${var.component}-role" }
+    { Name = "${var.env}-${var.component}" }
   )
 }
 
 # creating instance profile for role
 resource "aws_iam_instance_profile" "profile" {
-  name = "${var.env}--${var.component}-role"
+  name = "${var.env}-${var.component}-role"
   role = aws_iam_role.role.name
 }
 
 #creating  policy to the role with the help of UI creating JSon code
 resource "aws_iam_policy" "policy" {
-  name        = "${var.env}--${var.component}-parameter-store-policy"
+  name        = "${var.env}-${var.component}-parameter-store-policy"
   path        = "/"
-  description = "${var.env}--${var.component}-parameter-store-policy"
+  description = "${var.env}-${var.component}-parameter-store-policy"
 
 
   policy = jsonencode({
