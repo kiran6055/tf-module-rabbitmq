@@ -23,6 +23,15 @@ resource "aws_security_group" "rabbitmq" {
 }
 
 
+# creating aws ssm parameter user for rabbitmq for running and adding schemaload which is given in app main
+
+resource "aws_ssm_parameter" "rabbitmq_endpoint" {
+  name  = "${var.env}.rabbitmq.Endpoint"
+  type  = "String"
+  value = aws_mq_broker.rabbitmq.instances.0.endpoints.0
+}
+
+
 #rabbitmq configuration
 #resource "aws_mq_configuration" "rabbitmq" {
 #  description    = "${var.env}-rabbitmq-configuration"
