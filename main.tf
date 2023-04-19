@@ -28,7 +28,7 @@ resource "aws_security_group" "rabbitmq" {
 resource "aws_ssm_parameter" "rabbitmq_endpoint" {
   name  = "${var.env}.rabbitmq.Endpoint"
   type  = "String"
-  value = aws_mq_broker.rabbitmq.instances.0.endpoints.0
+  value = replace(aws_mq_broker.rabbitmq.instances.0.endpoints.0, "ampq://", "")
 }
 
 
