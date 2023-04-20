@@ -17,7 +17,7 @@ resource "aws_iam_role" "rabbitmqrole" {
 
   tags = merge(
     local.common_tags,
-    { Name = "${var.env}-${var.component}-role" }
+    { Name = "${var.env}-${var.component}-rolenew" }
   )
 }
 
