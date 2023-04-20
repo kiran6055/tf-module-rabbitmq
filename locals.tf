@@ -4,6 +4,6 @@ locals {
     project = "roboshop"
     business_unit = "ecommerce"
     owner = "IBM-ecommerce"
-    name = "kiran"
+
   }
 }
