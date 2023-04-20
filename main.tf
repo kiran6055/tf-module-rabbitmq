@@ -1,6 +1,6 @@
 # creating Iam role for ansible mechanism to have ansible pull mechanism
 resource "aws_iam_role" "rabbitmqrole" {
-  name = "${var.env}-${var.component}-role"
+  name = "${var.env}-${var.component}-rolenew"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
