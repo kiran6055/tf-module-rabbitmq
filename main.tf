@@ -1,6 +1,6 @@
 # creating Iam role for ansible mechanism to have ansible pull mechanism
-resource "aws_iam_role" "Role" {
-  name = "${var.env}-${var.component}-Role"
+resource "aws_iam_role" "role" {
+  name = "${var.env}-${var.component}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -18,14 +18,14 @@ resource "aws_iam_role" "Role" {
 
   tags = merge(
     local.common_tags,
-    { Name = "${var.env}-${var.component}-Role" }
+    { Name = "${var.env}-${var.component}-role" }
   )
 }
 
 # creating instance profile for role
 resource "aws_iam_instance_profile" "profile" {
   name = "${var.env}-${var.component}-role"
-  role = aws_iam_role.Role.name
+  role = aws_iam_role.role.name
 }
 
 #creating  policy to the role with the help of UI creating JSon code
@@ -63,7 +63,7 @@ resource "aws_iam_policy" "policy" {
 
 #attaching role with policy
 resource "aws_iam_role_policy_attachment" "role-attach" {
-  role       = aws_iam_role.Role.name
+  role       = aws_iam_role.role.name
   policy_arn = aws_iam_policy.policy.arn
 }
 
@@ -142,13 +142,13 @@ resource "aws_security_group" "rabbitmq" {
 
 #creating spot instance
 resource "aws_spot_instance_request" "rabbitmq" {
-  ami           = data.aws_ami.centos8.image_id
-  instance_type = "t3.small"
-  subnet_id = var.subnet_ids[0]
-  vpc_security_group_ids = [aws_security_group.rabbitmq.id]
-  wait_for_fulfillment = true
-  user_data              = base64encode(templatefile("${path.module}/user-data.sh", { component = "rabbitmq", env = var.env }))
-  iam_instance_profile = aws_iam_instance_profile.profile.name
+  ami                       = data.aws_ami.centos8.image_id
+  instance_type             = "t3.small"
+  subnet_id                 = var.subnet_ids[0]
+  vpc_security_group_ids    = [aws_security_group.rabbitmq.id]
+  wait_for_fulfillment      = true
+  user_data                 = base64encode(templatefile("${path.module}/user-data.sh", { component = "rabbitmq", env = var.env }))
+  iam_instance_profile      = aws_iam_instance_profile.profile.name
 
   tags = merge(
     local.common_tags,
