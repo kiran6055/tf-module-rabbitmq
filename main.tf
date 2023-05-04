@@ -158,8 +158,8 @@ resource "aws_spot_instance_request" "rabbitmq" {
 
 # creating route 53 record
 resource "aws_route53_record" "rabbitmq" {
-  zone_id = "Z05909301HWY2LI69YHHG"
-  name    = "rabbitmq-${var.env}.kiranprav.link"
+  zone_id = "Z09836283CE71XJOYIM7M"
+  name    = "rabbitmq-${var.env}.awsctr.online"
   type    = "A"
   ttl     = 30
   records = [aws_spot_instance_request.rabbitmq.private_ip]
