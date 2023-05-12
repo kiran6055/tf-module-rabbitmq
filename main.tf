@@ -49,7 +49,8 @@ resource "aws_iam_policy" "policy" {
         ],
         "Resource" : [
           "arn:aws:ssm:us-east-1:086083061026:parameter/${var.env}.${var.component}*",
-          "arn:aws:ssm:us-east-1:086083061026:parameter/${var.env}.ssh*"
+          "arn:aws:ssm:us-east-1:086083061026:parameter/${var.env}.ssh*",
+          "arn:aws:ssm:us-east-1:086083061026:parameter/grafana*"
          ]
       },
       {
