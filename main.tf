@@ -95,7 +95,7 @@ resource "aws_security_group" "rabbitmq" {
     from_port   = 9100
     to_port     = 9100
     protocol    = "tcp"
-    cidr_blocks = var.monitor_cidr
+    cidr_blocks = var.allow_cidr
   }
 
 
