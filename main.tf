@@ -90,6 +90,13 @@ resource "aws_security_group" "rabbitmq" {
       protocol    = "tcp"
       cidr_blocks = var.bastion_cidr
   }
+  ingress {
+    description = "ssh"
+    from_port   = 9100
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.monitor_cidr
+  }
 
 
   egress {
